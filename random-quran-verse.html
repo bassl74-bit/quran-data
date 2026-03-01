@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>آية عشوائية من القرآن الكريم</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --dark: #0d1117;
+    --dark-card: #1c2330;
+    --text: #e6dcc8;
+    --text-muted: #8b7355;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--dark); color: var(--text);
+    font-family: 'Amiri', serif;
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 2rem;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none;
+    background-image:
+      repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(201,168,76,0.03) 40px, rgba(201,168,76,0.03) 41px),
+      repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(201,168,76,0.03) 40px, rgba(201,168,76,0.03) 41px);
+  }
+  .container { width: 100%; max-width: 800px; position: relative; z-index: 1; }
+  header { text-align: center; margin-bottom: 2.5rem; }
+  .bismillah {
+    font-family: 'Amiri Quran', serif;
+    font-size: clamp(1.5rem, 4.5vw, 2.2rem);
+    color: var(--gold); text-shadow: 0 0 40px rgba(201,168,76,0.3); margin-bottom: 0.4rem;
+  }
+  .subtitle { color: var(--text-muted); font-size: 0.95rem; letter-spacing: 0.12em; }
+  .card {
+    background: var(--dark-card); border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px; padding: 3rem 2.5rem; min-height: 240px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,168,76,0.08);
+    position: relative;
+  }
+  .card::before { content: '✦'; position: absolute; top: 1rem; right: 1.2rem; color: var(--gold); opacity: 0.35; font-size: 1.1rem; }
+  .card::after  { content: '✦'; position: absolute; bottom: 1rem; left: 1.2rem; color: var(--gold); opacity: 0.35; font-size: 1.1rem; }
+  .verse-text {
+    font-family: 'Amiri Quran', serif;
+    font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 2.4;
+    text-align: center; color: var(--text); direction: rtl;
+  }
+  .verse-meta {
+    margin-top: 2rem; color: var(--gold); font-size: 0.95rem;
+    font-weight: 700; text-align: center; letter-spacing: 0.04em;
+  }
+  .verse-meta span { color: var(--text-muted); font-weight: 400; }
+  .placeholder { color: var(--text-muted); font-size: 1.1rem; text-align: center; line-height: 2; }
+  .error-msg { color: #e06c75; font-size: 0.95rem; text-align: center; line-height: 2; }
+
+.init-bar-wrap {
+width: 200px; height: 3px; background: rgba(201,168,76,0.15);
+border-radius: 10px; margin: 1rem auto 0; overflow: hidden;
+}
+.init-bar { height: 100%; width: 0%; background: var(–gold); border-radius: 10px; transition: width 0.3s ease; }
+.init-label { color: var(–text-muted); font-size: 0.8rem; text-align: center; margin-top: 0.5rem; }
+
+.loader { display: none; width: 38px; height: 38px; border: 2px solid rgba(201,168,76,0.15); border-top-color: var(–gold); border-radius: 50%; animation: spin 0.75s linear infinite; }
+.loader.active { display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.btn-wrap { display: flex; justify-content: center; margin-top: 2.2rem; }
+button {
+background: transparent; border: 1px solid var(–gold); color: var(–gold);
+font-family: ‘Amiri’, serif; font-size: 1.15rem; padding: 0.85rem 3rem;
+cursor: pointer; letter-spacing: 0.1em; position: relative; overflow: hidden;
+transition: color 0.3s; border-radius: 2px;
+}
+button::before {
+content: ‘’; position: absolute; inset: 0; background: var(–gold);
+transform: scaleX(0); transform-origin: right;
+transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); z-index: -1;
+}
+button:hover::before { transform: scaleX(1); transform-origin: left; }
+button:hover { color: var(–dark); }
+button:active { transform: scale(0.98); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+.counter { text-align: center; margin-top: 1rem; color: var(–text-muted); font-size: 0.82rem; letter-spacing: 0.08em; }
+.ready-badge { display: inline-block; font-size: 0.72rem; color: #58a062; border: 1px solid rgba(88,160,98,0.35); padding: 0.1rem 0.6rem; border-radius: 20px; margin-top: 0.4rem; letter-spacing: 0.05em; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeIn 0.5s ease forwards; }
+</style>
+
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+    <div class="subtitle">آية عشوائية من كتاب الله الكريم</div>
+  </header>
+  <div class="card">
+    <div class="loader" id="loader"></div>
+    <div id="content">
+      <p class="placeholder">جارٍ تحميل القرآن الكريم…</p>
+      <div class="init-bar-wrap"><div class="init-bar" id="initBar"></div></div>
+      <p class="init-label" id="initLabel">يُحمَّل مرة واحدة فقط</p>
+    </div>
+    <div id="meta"></div>
+  </div>
+  <div class="btn-wrap">
+    <button id="btn" onclick="showVerse()" disabled>جارٍ التحميل…</button>
+  </div>
+  <div class="counter" id="counter"></div>
+</div>
+
+<script>
+const surahNames = [
+  "الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
+  "هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه",
+  "الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم",
+  "لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر",
+  "فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق",
+  "الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة",
+  "الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج",
+  "نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس",
+  "التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد",
+  "الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات",
+  "القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر",
+  "المسد","الإخلاص","الفلق","الناس"
+];
+
+// ثلاثة روابط بديلة لنفس الملف
+const URLS = [
+  "https://cdn.jsdelivr.net/gh/bassl74-bit/quran-data@main/quran.json",
+  "https://cdn.jsdelivr.net/gh/bassl74-bit/quran-data@master/quran.json",
+  "https://cdn.jsdelivr.net/gh/bassl74-bit/quran-data/quran.json",
+  "https://raw.githubusercontent.com/bassl74-bit/quran-data/main/quran.json",
+  "https://raw.githubusercontent.com/bassl74-bit/quran-data/master/quran.json",
+];
+
+let allVerses = [];
+let pressCount = 0;
+let ready = false;
+
+async function tryFetch(url) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+  try {
+    const r = await fetch(url, {
+      signal: controller.signal,
+      mode: 'cors',
+      cache: 'no-cache'
+    });
+    clearTimeout(timeout);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return await r.json();
+  } catch(e) {
+    clearTimeout(timeout);
+    throw e;
+  }
+}
+
+async function loadQuran() {
+  const bar   = document.getElementById('initBar');
+  const btn   = document.getElementById('btn');
+
+  let fakeP = 0;
+  const ticker = setInterval(() => {
+    fakeP = Math.min(fakeP + Math.random() * 6, 80);
+    bar.style.width = fakeP + '%';
+  }, 250);
+
+  let data = null;
+  let lastErr = '';
+
+  for (const url of URLS) {
+    try {
+      document.getElementById('initLabel').textContent = 'جارٍ الاتصال…';
+      data = await tryFetch(url);
+      if (data) break;
+    } catch(e) {
+      lastErr = e.message;
+      console.warn('فشل:', url, e.message);
+    }
+  }
+
+  clearInterval(ticker);
+
+  if (!data) {
+    bar.style.width = '100%';
+    bar.style.background = '#e06c75';
+    document.getElementById('content').innerHTML = `
+      <p class="error-msg">
+        تعذّر تحميل الملف<br>
+        <span style="font-size:0.78rem;color:var(--text-muted)">
+          ${lastErr}<br><br>
+          افتح Developer Tools (F12) ← Console<br>
+          وأرسل لي الخطأ الأحمر الموجود
+        </span>
+      </p>`;
+    btn.textContent = '↺ أعد المحاولة';
+    btn.disabled = false;
+    btn.onclick = () => location.reload();
+    return;
+  }
+
+  // بناء المصفوفة المسطّحة
+  for (let s = 1; s <= 114; s++) {
+    const arr = data[String(s)];
+    if (Array.isArray(arr)) {
+      for (const v of arr) allVerses.push(v);
+    }
+  }
+
+  bar.style.width = '100%';
+  setTimeout(() => {
+    ready = true;
+    document.getElementById('content').innerHTML =
+      `<p class="placeholder fade-in">القرآن الكريم جاهز<br>
+       <span style="font-size:0.85rem;color:var(--text-muted)">${allVerses.length.toLocaleString('ar-EG')} آية محمّلة</span></p>`;
+    document.getElementById('meta').innerHTML =
+      `<div class="ready-badge fade-in">✓ جاهز للاستخدام</div>`;
+    btn.textContent = '✦ آية عشوائية ✦';
+    btn.disabled = false;
+  }, 300);
+}
+
+function showVerse() {
+  if (!ready || allVerses.length === 0) return;
+
+  const loader  = document.getElementById('loader');
+  const content = document.getElementById('content');
+  const meta    = document.getElementById('meta');
+
+  loader.className = 'loader active';
+  content.innerHTML = '';
+  meta.innerHTML = '';
+
+  setTimeout(() => {
+    const idx  = Math.floor(Math.random() * allVerses.length);
+    const v    = allVerses[idx];
+    const name = surahNames[v.chapter - 1] || `سورة ${v.chapter}`;
+
+    loader.className = 'loader';
+    content.innerHTML = `<div class="verse-text fade-in">${v.text}</div>`;
+    meta.innerHTML = `
+      <div class="verse-meta fade-in">
+        سورة ${name}
+        &nbsp;|&nbsp; <span>الآية ${v.verse}</span>
+        &nbsp;|&nbsp; <span>${idx + 1} / ${allVerses.length}</span>
+      </div>`;
+
+    pressCount++;
+    document.getElementById('counter').textContent = `عدد الآيات المعروضة: ${pressCount}`;
+  }, 100);
+}
+
+loadQuran();
+</script>
+
+</body>
+</html>
