@@ -24,10 +24,15 @@
     --text-muted: #c4b08a;
   }
 
+html {
+background-color: #0a0a0f;
+}
+
 - { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
 background: var(–dark);
+background-color: #0a0a0f;
 color: var(–text);
 font-family: ‘Scheherazade New’, serif;
 min-height: 100vh;
@@ -45,6 +50,7 @@ radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
 radial-gradient(ellipse at 80% 80%, rgba(15,76,117,0.15) 0%, transparent 50%),
 radial-gradient(ellipse at 50% 50%, rgba(26,26,46,1) 0%, rgba(10,10,15,1) 100%);
 z-index: -2;
+pointer-events: none;
 }
 
 .stars {
@@ -161,7 +167,7 @@ box-shadow: 0 0 12px var(–gold);
 
 /* Cards */
 .card {
-background: linear-gradient(135deg, rgba(26,26,46,0.9), rgba(18,18,28,0.95));
+background: rgba(20,20,38,0.97);
 border: 1px solid rgba(201,168,76,0.2);
 border-radius: 16px;
 padding: 32px;
@@ -169,6 +175,7 @@ margin-bottom: 24px;
 position: relative;
 backdrop-filter: blur(10px);
 box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(201,168,76,0.1);
+color: var(–text);
 }
 
 .card::before {
@@ -197,6 +204,7 @@ font-size: 1.5rem;
 .step-section {
 text-align: center;
 padding: 40px 20px;
+color: var(–text);
 }
 
 .step-text {
@@ -362,12 +370,13 @@ text-align: justify;
 
 /* Surah al-qadr display */
 .surah-box {
-background: linear-gradient(135deg, rgba(15,76,117,0.2), rgba(26,26,46,0.8));
-border: 1px solid rgba(15,76,117,0.4);
+background: rgba(15,30,60,0.95);
+border: 1px solid rgba(15,76,117,0.5);
 border-radius: 16px;
 padding: 28px;
 text-align: center;
 margin: 20px 0;
+color: var(–text);
 }
 
 .surah-title {
@@ -457,7 +466,7 @@ animation: pulse 2s ease-in-out infinite;
 
 /* Sections visibility */
 .section { display: none; }
-.section.active { display: block; animation: fadeIn 0.8s ease; }
+.section.active { display: block; animation: fadeIn 0.8s ease; background-color: transparent; }
 
 @keyframes fadeIn {
 from { opacity: 0; transform: translateY(20px); }
@@ -679,7 +688,7 @@ opacity: 0.6;
     <button class="btn btn-gold" onclick="goToStep5()">
       ✦ التفسير الروحي لاستخارتي
     </button>
-    <button class="btn btn-teal" onclick="goToStep5WithoutIntent()">
+    <button class="btn btn-teal" onclick="goToStep5WithoutIntent()" style="color: var(--gold-light); border-color: rgba(201,168,76,0.4);">
       تفسير عام بدون نية محددة
     </button>
   </div>
@@ -702,40 +711,21 @@ opacity: 0.6;
   <div class="card-title"><span class="icon">📖</span> الآية الواقعة</div>
   <div class="quran-text" id="ayahText2"></div>
   <div class="ayah-ref" id="ayahRef2"></div>
-</div>
-
-<!-- التصنيف الروحي -->
-<div class="card">
-  <div class="card-title"><span class="icon">✨</span> الطاقة الروحية لهذه الاستخارة</div>
-  <div style="text-align:center; margin-bottom:18px;">
+  <div style="text-align:center; margin-top:16px;">
     <span id="ratingBadge" class="rating-badge"></span>
   </div>
-  <div class="energy-lines" id="energyLines"></div>
 </div>
 
-<!-- التحليل -->
-<div class="card">
-  <div class="card-title"><span class="icon">🔮</span> التحليل الروحي والتأويلي</div>
-  <div class="analysis-text" id="analysisText"></div>
-  <div id="abjadBox" class="abjad-box" style="display:none;"></div>
-</div>
+<!-- التفسير الذكي -->
+<div id="intentResult" style="margin-bottom: 20px;"></div>
 
-<!-- جدول النيات -->
-<div class="card">
-  <div class="card-title"><span class="icon">📊</span> النتيجة حسب نوع النية المحتملة</div>
-  <table class="niyat-table">
-    <thead>
-      <tr><th>النية</th><th>الدلالة</th><th>التوجيه</th></tr>
-    </thead>
-    <tbody id="niyatTableBody"></tbody>
-  </table>
-</div>
-
-<!-- نتيجة النية المحددة -->
-<div id="intentResult" style="display:none; margin-bottom: 20px;"></div>
+<!-- عناصر مخفية للتوافق -->
+<div id="energyLines" style="display:none;"></div>
+<div id="analysisText" style="display:none;"></div>
+<div id="abjadBox" style="display:none;"></div>
 
 <!-- Advisory notice -->
-<div class="card" style="border-color: rgba(201,168,76,0.2); background: rgba(201,168,76,0.04);">
+<div class="card" style="border-color: rgba(201,168,76,0.2); background: rgba(26,26,46,0.95);">
   <div style="text-align:center; color: var(--gold); font-size: 1.1rem; margin-bottom: 12px;">✦ تنبيه ✦</div>
   <p style="color: var(--text-muted); font-size: 1rem; line-height: 2.2; text-align: center;">
     هذه الاستخارة <strong style="color: var(--gold-light)">ليست بديلاً</strong> عن صلاة الاستخارة الشرعية.<br>
@@ -744,7 +734,7 @@ opacity: 0.6;
 </div>
 
 <!-- Dedication box -->
-<div class="card" style="border-color: rgba(201,168,76,0.35); background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(15,76,117,0.08)); text-align:center;">
+<div class="card" style="border-color: rgba(201,168,76,0.35); background: linear-gradient(135deg, rgba(26,26,46,0.95), rgba(16,21,38,0.98)); text-align:center;">
   <div style="color: var(--gold); font-size: 1.4rem; margin-bottom: 8px;">✦</div>
   <p style="color: var(--text); font-size: 1.05rem; line-height: 2.2; font-family: 'Scheherazade New', serif;">
     هذا التطبيق من إعداد <strong style="color: var(--gold-light)">باسل الشمري</strong>
@@ -1068,62 +1058,106 @@ function goToStep5WithoutIntent() {
   renderInterpretation(null);
 }
 
-function renderInterpretation(intent) {
+async function renderInterpretation(intent) {
   if (!currentAyah) return;
 
-  // التصنيف يحدث هنا فقط — بعد الاختيار وبعد ظهور الآية
-  const type = classifyAyah(currentAyah.text);
-
+  // عرض الآية في step5 أولاً
   document.getElementById('ayahText2').textContent = currentAyah.text;
   document.getElementById('ayahRef2').textContent = `سورة ${currentAyah.surah} — الآية ${currentAyah.ayah}`;
 
-  const rating = getRating(type);
-  const badge = document.getElementById('ratingBadge');
-  badge.textContent = rating.label;
-  badge.className = 'rating-badge ' + rating.cls;
-
-  document.getElementById('energyLines').innerHTML =
-    getEnergy(type).map(l => `<div class="energy-line">${l}</div>`).join('');
-
-  document.getElementById('analysisText').textContent = getAnalysis(type);
-
-  const abjadBox = document.getElementById('abjadBox');
-  if (type !== 'light' && Math.random() > 0.5) {
-    const num = currentAyah.text.length * 3 + currentAyah.ayah;
-    const reduced = (num % 9) || 9;
-    const meanings = {1:'البداية والقيادة',2:'الثنائية والتأمل',3:'الإبداع والتعبير',4:'الاستقرار والأساس',5:'الحرية والتغيير',6:'الالتزام والمسؤولية',7:'الحكمة الروحية',8:'القوة والنجاح المادي',9:'الإتمام والتجديد'};
-    abjadBox.innerHTML = `<span style="color:var(--gold)">✦ طاقة الأرقام:</span> الرقم <strong style="color:var(--gold-light)">${reduced}</strong> — يرمز إلى <em>${meanings[reduced]}</em>.`;
-    abjadBox.style.display = 'block';
-  } else {
-    abjadBox.style.display = 'none';
-  }
-
-  const tableData = niyatData[type] || niyatData.medium;
-  const tbody = document.getElementById('niyatTableBody');
-  tbody.innerHTML = '';
-  Object.entries(tableData).forEach(([niya, data]) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td><span class="niyat-icon">${niyatIcons[niya] || '•'}</span> ${niya}</td>
-      <td class="${data.cls}">${data.dil}</td>
-      <td><strong class="${data.cls}">${data.tw}</strong></td>`;
-    tbody.appendChild(tr);
-  });
+  // إخفاء العناصر القديمة وإظهار مؤشر التحميل
+  document.getElementById('ratingBadge').textContent = '';
+  document.getElementById('energyLines').innerHTML = '';
+  document.getElementById('abjadBox').style.display = 'none';
+  document.getElementById('analysisText').textContent = '';
 
   const intentResult = document.getElementById('intentResult');
-  if (intent) {
-    const interpretations = {
-      light: `بناءً على نيتك "${intent}" — الاستخارة تُشير إلى أن هذا الأمر مبارك في حقك. الآية الواقعة فيها نور ينسجم مع ما تقصد. إن كانت نيتك صادقة فامضِ بتوكل على الله.`,
-      warning: `بناءً على نيتك "${intent}" — الاستخارة تحمل تحذيراً. الآية الواقعة فيها إشارة تستوجب التأمل والتروي. لا تتعجل.`,
-      medium: `بناءً على نيتك "${intent}" — الاستخارة في الوسط. الأمر لم تنضج ظروفه بعد. إن أمكن الانتظار فهو أحكم.`,
-    };
-    intentResult.innerHTML = `<div class="card"><div class="card-title"><span class="icon">💭</span> تفسير وفق نيتك</div>
-      <div style="color:var(--text); font-size:1.05rem; line-height:2.2;">${interpretations[type]}</div></div>`;
-    intentResult.style.display = 'block';
-  } else {
-    intentResult.style.display = 'none';
-  }
+  intentResult.innerHTML = `
+    <div class="card" style="text-align:center;">
+      <div class="moon-loader" style="margin: 0 auto 16px;"></div>
+      <div style="color:var(--gold-light); font-size:1.1rem;">جارٍ التفسير الروحي بالذكاء الاصطناعي...</div>
+    </div>`;
+  intentResult.style.display = 'block';
 
   showSection('step5');
+
+  // بناء الـ prompt
+  const surahAyah = `سورة ${currentAyah.surah}، الآية ${currentAyah.ayah}`;
+  const intentText = intent ? `نية المستخير: "${intent}"` : 'المستخير لم يحدد نية معينة، يريد تفسيراً عاماً';
+
+  const prompt = `أنت مفسر روحي للقرآن الكريم في سياق الاستخارة الغيبية.
+
+وقعت هذه الآية الكريمة عشوائياً من ${surahAyah}:
+﴿${currentAyah.text}﴾
+
+${intentText}
+
+المطلوب: اكتب تفسيراً روحياً مرتبطاً تحديداً بنص هذه الآية وما تحمله من معنى، وربطه بنية المستخير إن وجدت.
+
+التفسير يجب أن:
+١. يشرح معنى الآية ومضمونها بإيجاز
+٢. يربطها بحالة المستخير وسؤاله
+٣. يستخلص الإشارة الروحية منها (هل تبشر، تحذر، تدعو للتأمل؟)
+٤. ينتهي بخلاصة عملية موجهة للمستخير
+
+اكتب بأسلوب روحي دافئ وبالعربية الفصحى. لا تتجاوز ١٥٠ كلمة.`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await response.json();
+    const text = data.content?.[0]?.text || '';
+
+    if (!text) throw new Error('لا يوجد رد');
+
+    // تحديد نوع الاستخارة بناءً على التفسير
+    const type = classifyAyah(currentAyah.text);
+    const rating = getRating(type);
+    const badge = document.getElementById('ratingBadge');
+    badge.textContent = rating.label;
+    badge.className = 'rating-badge ' + rating.cls;
+
+    intentResult.innerHTML = `
+      <div class="card">
+        <div class="card-title"><span class="icon">✨</span> التفسير الروحي</div>
+        <div style="color:var(--text); font-size:1.15rem; line-height:2.4; font-family:'Scheherazade New',serif;">${text.replace(/
+/g, '<br>')}</div>
+      </div>`;
+
+  } catch(e) {
+    // fallback إذا فشل الـ API
+    const type = classifyAyah(currentAyah.text);
+    const fallbacks = {
+      light: `﴿${currentAyah.text}﴾
+
+هذه الآية الكريمة من ${surahAyah} تحمل في طياتها بشارة ونوراً. ${intent ? `وفي ضوء ما ذكرته من "${intent}"،` : 'و'} فإن المتأمل فيها يجد إشارة إلى الرحمة والفضل الإلهي. فتوكل على الله وامضِ في أمرك بعد استشارة أهل الرأي.`,
+      warning: `﴿${currentAyah.text}﴾
+
+هذه الآية من ${surahAyah} تدعو إلى التأمل والتروي. ${intent ? `وفي شأن "${intent}"،` : 'و'} فإنها إشارة للتمهل وإعادة النظر. لا تتعجل في قرارك.`,
+      medium: `﴿${currentAyah.text}﴾
+
+هذه الآية من ${surahAyah} تدعو إلى الحكمة والتوازن. ${intent ? `وفي شأن "${intent}"،` : 'و'} فإن الأمر يحتاج مزيداً من الدراسة والتشاور. استشر أهل العلم والخبرة.`,
+    };
+    const rating = getRating(type);
+    const badge = document.getElementById('ratingBadge');
+    badge.textContent = rating.label;
+    badge.className = 'rating-badge ' + rating.cls;
+
+    intentResult.innerHTML = `
+      <div class="card">
+        <div class="card-title"><span class="icon">📖</span> التفسير الروحي</div>
+        <div style="color:var(--text); font-size:1.15rem; line-height:2.4; font-family:'Scheherazade New',serif;">${fallbacks[type].replace(/
+/g, '<br>')}</div>
+      </div>`;
+  }
 }
 
 function resetAll() {
